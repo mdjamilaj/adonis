@@ -41,4 +41,10 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/index', 'UserController.index').as('users.index')
   Route.post('/logout', 'AuthController.destroy').as('logout')
+  Route.post('/product_create', 'ProductController.create').as('product_create')
+  Route.get('/delete/:id', 'ProductController.destroy')
+  Route.get('/edit/:id', 'ProductController.edit')
+  Route.get('/post', 'PostController.index').as('post.index')
 }).middleware(['auth'])
+
+  Route.get('/update/:id', 'ProductController.update')

@@ -5,10 +5,256 @@
     @if(flashMessage('successMessage'))
         <div class="alert alert-success mb-4">{{ flashMessage('successMessage') }}</div>
     @endif
-    sdnfosdfhoisdhfosdhfo
-
     
+<div class="bg-gradient-secondary w-100 h-25">
+    <h1 class="container bg-success p-3 text-white text-center m-0">All Product Detials</h1>
+                <a class="btn bg-gradient-primary text-white float-right mt-2" href="" data-toggle="modal" data-target="#logoutModal1">
+                  Add Product
+                </a>
+</div>
 
+    <div class="modal fade" id="logoutModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Registretion</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form action="{{ route('product_create') }}" method="POST" enctype="multipart/form-data">
+        {{ csrfField() }}
+        <div class="modal-body">
+            <div class="form-group">
+            <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="Name" name="product_name">
+                @if(hasErrorFor('product_name'))
+            <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_name') }}</div>
+            @endif
+            </div>
+        <div class="form-group">
+            <input type="text" class="form-control form-control-user" id="exampleInputStatus" placeholder="Status" name="product_status">
+            @if(hasErrorFor('product_status'))
+            <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_status') }}</div>
+            @endif
+        </div>
+         <div >
+          <select id="categorys" name="categorys[]"  multiple>
+            @each(category in Category)
+              <option value="{{category.id}}">{{category.category}}</option>
+              @endeach
+            </select>
+            @if(hasErrorFor('categorys'))
+            <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('categorys') }}</div>
+            @endif
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+            <input type="text" class="form-control form-control-user" id="exampleInputPrice" placeholder="Price" name="product_price">
+            @if(hasErrorFor('product_price'))
+                <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_price') }}</div>
+            @endif
+            </div>
+            <div class="col-sm-6">
+            <input type="file" class="form-control form-control-user" id="exampleInputFile"   name="product_img" multiple >
+            @if(hasErrorFor('password'))
+                <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('password') }}</div>
+            @endif
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          
+            <button class="btn btn-primary">Submit</button>
+         </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <table class="table table-success">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">Name</th>
+	      <th scope="col">Images</th>
+        <th scope="col">rules</th>
+        <th scope="col">Price</th>
+	      <th scope="col">Action</th>
+	    </tr>
+	  </thead>
+	  <tbody> 
+	  	@each(product in Products)
+		    <tr>
+		      <th scope="row">{{ product.id }}</th>
+		      <td>{{ product.product_name }}</td>
+		      <td><img src="uploads/post/{{ product.product_img }}" width="50px" /></td>
+		      <td>{{ product.product_status }}</td>
+		      <td>{{ product.product_price }}</td>
+		   	 <td>
+					<button type="submit" onclick="myfunction({{product.id}})" class="btn btn-danger">Delete</button>
+				  <button type="submit" onclick="myedit({{product.id}})" class="btn btn-success"  data-toggle="modal" data-target="#editModal">Edit</button>
+			  </td>
+		    </tr>
+	    @endeach
+	  </tbody>
+	</table>
+
+
+
+
+
+   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Registretion</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <form id="data" method="POST" enctype="multipart/form-data">
+        {{ csrfField() }}
+        <div class="modal-body">
+            <div class="form-group">
+            <input type="text" class="form-control form-control-user" id="product_name1" placeholder="Name" name="product_name">
+                @if(hasErrorFor('product_name'))
+                  <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_name') }}</div>
+                @endif
+            </div>
+        <div class="form-group">
+            <input type="text" class="form-control form-control-user" id="product_status1" placeholder="Status" name="product_status">
+            @if(hasErrorFor('product_status'))
+            <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_status') }}</div>
+            @endif
+        </div>
+       
+        <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+            <input type="text" class="form-control form-control-user" id="product_price1" placeholder="Price" name="product_price">
+            @if(hasErrorFor('product_price'))
+                <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_price') }}</div>
+            @endif
+            </div>
+            <div class="col-sm-6">
+              <input type="hidden"  id="id1" name="id1">
+            <input type="file" class="form-control form-control-user" id="product_img1"   name="product_img" multiple >
+            @if(hasErrorFor('product_img'))
+                <div class="alert alert-danger mb-2 mt-2">{{ getErrorFor('product_img') }}</div>
+            @endif
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          
+            <button class="btn btn-primary">Submit</button>
+         </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+function myfunction(id){
+  // console.log(id);
+    $.ajax({    
+      
+        type: "GET",
+        url: "/delete/"+id,            
+        //dataType: "html",   //expect html to be returned                
+        success: function(response){        
+          var data = response;  
+          // console.log(data);
+          alert(data);
+        }
+    });
+}
+
+//product edit section 
+
+
+function myedit(id){
+  console.log(id);
+    $.ajax({    
+      
+        type: "GET",
+        url: "/edit/"+id,            
+        //dataType: "html",   //expect html to be returned                
+        success: function(response){        
+          var data = response;  
+          // console.log(data);
+          // alert(data);
+                   
+          $('#product_name1').val(data.product_name);
+          $('#product_price1').val(data.product_price);
+          $('#product_status1').val(data.product_status);
+          $('#id1').val(data.id);
+          // $('#exampleModal').modal('hide');
+        }
+    });
+}
+
+
+
+
+
+
+$("form#data").submit(function(e) {
+    e.preventDefault();    
+    var formData = new FormData(this);
+    var id = $('#id1').val();
+
+    console.log(id);
+
+    $.ajax({
+        url: "/update/"+id,
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            // alert(data)
+            console.log(data);
+            $('#editModal').modal('hide');
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+});
+
+
+
+// $(document).ready(function() {
+// 	$('#butsave').on('click', function() {
+// 		$("#butsave").attr("disabled", "disabled");
+// 		var name = $('#name').val();
+// 		var sms = $('#sms').val();
+//         // console.log(sms);
+// 		if(name!="" && sms!=""){
+// 			$.ajax({
+// 				url: "/update/"+id,
+// 				type: "POST",
+// 				data: {
+// 					name: name,
+// 					sms: sms		
+// 				},
+// 				cache: false,
+// 				success: function(data){
+//           var data = JSON.parse(data);
+          
+
+
+//       }
+// 	});
+// });
+</script>
 
 
 @endsection
+
+
